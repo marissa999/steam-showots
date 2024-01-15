@@ -1,0 +1,4 @@
+watchdog
+websockets
+pillow
+asyncio
