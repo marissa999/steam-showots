@@ -148,16 +148,18 @@ class NewFileHandler(FileSystemEventHandler):
 
 
 def new_screenshot_found(screenshot_path: str):
-	print(screenshot_path)
+	print("Screenshot found at ", screenshot_path)
 	image = Image.open(screenshot_path)
 	async def asyncfunc():
 		url = "ws://{}:{}".format(websocket_host, websocket_port)
-		print("Connecting to {}".format(url))
-		async with websockets.connect(url) as ws:
-			imgByteArr = io.BytesIO()
-			image.save(imgByteArr, format=image.format)
-			imgByteArr = imgByteArr.getvalue()
-			await ws.send(imgByteArr)
+		try:
+			async with websockets.connect(url) as ws:
+				imgByteArr = io.BytesIO()
+				image.save(imgByteArr, format=image.format)
+				imgByteArr = imgByteArr.getvalue()
+				await ws.send(imgByteArr)
+		except ConnectionRefusedError:
+			print("Unable to connect to ", url)
 	asyncio.run(asyncfunc())
 
 
