@@ -5,20 +5,44 @@ import time
 import websockets
 import io
 import asyncio
+import configparser
 from PIL import Image
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 
 
-STEAM_PATH_LINUX = "~/.local/share/Steam"
-STEAM_PATH_MAC = "~/Library/Application Support/Steam/userdata"
-STEAM_PATH_WINDOWS = "C:\\Program Files (x86)\\Steam\\userdata"
+# CONSTANTS
+STEAM_PATH_LINUX: str = "~/.local/share/Steam"
+STEAM_PATH_MAC: str = "~/Library/Application Support/Steam/userdata"
+STEAM_PATH_WINDOWS: str = "C:\\Program Files (x86)\\Steam\\userdata"
+
+# CONFIG VARIABLES
+websocket_host: str = '127.0.0.1'
+websocket_port: str = '7331'
 
 
 
 def main():
-	
+
+	# Read config
+	config_file = os.path.join(os.path.expanduser('~'),'.config','showots.ini')
+	config = configparser.ConfigParser()
+	res = config.read(config_file)
+
+	if len(res) != 0:
+		try:
+			global websocket_host
+			websocket_host = config['general']['host'].strip()
+		except KeyError:
+			pass
+
+		try:
+			global websocket_port
+			websocket_port = config['general']['port'].strip()
+		except KeyError:
+			pass
+
 	# Obtain a list of all user accounts
 	user_accounts: [str] = list_user_accounts()
 
@@ -125,7 +149,8 @@ def new_screenshot_found(screenshot_path: str):
 	print(screenshot_path)
 	image = Image.open(screenshot_path)
 	async def asyncfunc():
-		url = "ws://127.0.0.1:7331"
+		url = "ws://{}:{}".format(websocket_host, websocket_port)
+		print("Connecting to {}".format(url))
 		async with websockets.connect(url) as ws:
 			imgByteArr = io.BytesIO()
 			image.save(imgByteArr, format=image.format)
