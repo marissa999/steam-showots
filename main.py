@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import time
 import websockets
 import io
@@ -160,6 +161,7 @@ def new_screenshot_found(screenshot_path: str):
 				await ws.send(imgByteArr)
 		except ConnectionRefusedError:
 			print("Unable to connect to ", url)
+		sys.stdout.flush()
 	asyncio.run(asyncfunc())
 
 
