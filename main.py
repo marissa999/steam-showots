@@ -70,7 +70,7 @@ def main():
 
 def get_steam_path() -> str:
 	from sys import platform
-	if platform == "linux" or platform == "linux2":
+	if platform == "linux":
 		return os.path.expanduser(STEAM_PATH_LINUX)
 	elif platform == "darwin":
 		return os.path.expanduser(STEAM_PATH_MAC)
@@ -114,23 +114,6 @@ def list_remote_folders(steam_userdata_accounts: [str]) -> [str]:
 		remote_folders.append(path_folder_remote)
 
 	return remote_folders
-
-
-
-def list_screenshot_folders(steam_remote_folders: [str]) -> [str]:
-	screenshot_folders: [str] = []
-
-	for remote_folder in steam_remote_folders:
-
-		if not os.path.exists(remote_folder):
-			raise RuntimeError(f"Specified path does not exist: {remote_folder}")
-
-		for folder in os.listdir(remote_folder):
-			screenshot_folder_path = os.path.join(remote_folder, folder, 'screenshots')
-			if os.path.exists(screenshot_folder_path):
-				screenshot_folders.append(screenshot_folder_path)
-
-	return screenshot_folders
 
 
 
