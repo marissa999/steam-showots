@@ -49,14 +49,12 @@ def main():
 	# Obtain a list of all remote folders
 	remote_folders: [str] = list_remote_folders(user_accounts)
 
-	# Obtain a list of all screenshot folders
-	screenshot_folders: [str] = list_screenshot_folders(remote_folders)
-
+	# Setup observers
 	event_handler = NewFileHandler(new_screenshot_found)
 	observer = Observer()
 
-	for folder in screenshot_folders:
-		observer.schedule(event_handler, folder, recursive=False)
+	for folder in remote_folders:
+		observer.schedule(event_handler, folder, recursive=True)
 
 	observer.start()
 
@@ -141,7 +139,11 @@ class NewFileHandler(FileSystemEventHandler):
 		self.callback = callback
 
 	def on_created(self, event):
-		self.callback(event.src_path)
+		# Ignore folders
+		if not event.is_directory:
+			# Skip thumbmails 
+			if os.path.basename(os.path.dirname(event.src_path)) != "thumbnails":
+				self.callback(event.src_path)
 
 
 
