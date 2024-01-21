@@ -14,8 +14,8 @@ from watchdog.events import FileSystemEventHandler
 
 # CONSTANTS
 STEAM_PATH_LINUX: str = "~/.local/share/Steam"
-STEAM_PATH_MAC: str = "~/Library/Application Support/Steam/userdata"
-STEAM_PATH_WINDOWS: str = "C:\\Program Files (x86)\\Steam\\userdata"
+STEAM_PATH_MAC: str = "~/Library/Application Support/Steam"
+STEAM_PATH_WINDOWS: str = "C:\\Program Files (x86)\\Steam"
 
 # CONFIG VARIABLES
 websocket_host: str = '127.0.0.1'
