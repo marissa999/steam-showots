@@ -7,9 +7,11 @@ Relies on https://github.com/AuroraWright/owocr
 
 ### Installation
 
-  git clone https://github.com/marissa999/steam-showots.git
-  cd steam-showots
-  ./linux_install.sh
+```
+git clone https://github.com/marissa999/steam-showots.git
+cd steam-showots
+./linux_install.sh
+```
 
 ### Configuration
 
