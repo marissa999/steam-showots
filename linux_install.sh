@@ -8,7 +8,7 @@ printf "Setting up script for $USER in path $SCRIPTPATH\n\n"
 cd $SCRIPTPATH
 
 
-printf "Creating venv: 'python -m venv'\n"
+printf "Creating venv: 'python -m venv $SCRIPTPATH'\n"
 python -m venv $SCRIPTPATH
 printf "venv created...\n\n"
 
